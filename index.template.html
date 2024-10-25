@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo: Cesium Threejs 3dGS</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three" // 修正
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js"
+    window.THREE = THREE
+    window.THREEOrbitControls = { OrbitControls: OrbitControls }  // vite.config.js global
+  </script>
+  <!-- <script src="/cesium-threejs-3dgs.umd.cjs" defer></script> -->
+  <script src="./cesium-threejs-3dgs-without-threejs.umd.cjs" defer></script>
+  <script src="https://sandcastle.cesium.com/Sandcastle-header.js"></script>
+  <style>
+    #cesiumContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    #toolbar {
+      margin: 5px;
+      padding: 2px 5px;
+      position: absolute;
+    }
+
+    #threeContainer {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .cesium-viewer-bottom,
+    .cesium-viewer-toolbar,
+    .cesium-viewer-animationContainer,
+    .cesium-viewer-timelineContainer,
+    .cesium-viewer-fullscreenContainer
+    {
+      z-index: 100
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <div id="toolbar"></div>
+  <script type="module">
+    // Your access token can be found at: https://ion.cesium.com/tokens.
+    // Replace `your_access_token` with your Cesium ion access token.
+
+    // Cesium.Ion.defaultAccessToken = "%VITE_CESIUM_ACCESS_TOKEN%"
+
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+    })
+
+    // import CesiumThreejs3DGS from '/src/cesium-threejs-3dgs.ts'
+    const cesiumThreejs3DGS = new CesiumThreejs3DGS(viewer)
+
+    const options = [
+      {
+        text: "Naka Island",
+        onselect: async () => {
+          await cesiumThreejs3DGS.remove3dgsAll()
+          cesiumThreejs3DGS.load3dgs(
+            {
+              splatUrl: "./demo/nakajima.ksplat",
+              lat: 33.973,
+              lon: 132.63026,
+              height: 40,
+              headingPitchRoll: { heading: 37, pitch: 180, roll: 0 },
+              scale: 45,
+              camera: {
+                offset: { x: 150, y: -70, z: 30 },
+                headingPitchRoll: { heading: -20, pitch: -10, roll: 0 }
+              }
+            }
+          )
+        },
+      },
+      {
+        text: "F-4 Phantom",
+        onselect: async () => {
+          await cesiumThreejs3DGS.remove3dgsAll()
+          cesiumThreejs3DGS.load3dgs(
+            {
+              splatUrl: "./demo/phantom.ksplat",
+              lat: 36.17664577334638,
+              lon: 140.40685215446348,
+              height: 74.0,
+              headingPitchRoll: { heading: 65, pitch: 180, roll: 0 },
+              scale: 5,
+              camera: {
+                offset: { x: -5, y: 18, z: 0 },
+                headingPitchRoll: { heading: 240, pitch: 5, roll: 0 }
+              }
+            }
+          )
+        },
+      },
+      {
+        text: "Former Nara Prison",
+        onselect: async () => {
+          await cesiumThreejs3DGS.remove3dgsAll()
+          cesiumThreejs3DGS.load3dgs(
+            {
+              splatUrl: "./demo/former-nara-prison.ksplat",
+              lat: 34.69849,
+              lon: 135.83445,
+              height: 155.4,
+              headingPitchRoll: { heading: 175, pitch: 180, roll: 0 },
+              scale: 15,
+              camera: {
+                offset: { x: 30, y: 2, z: 3 },
+                headingPitchRoll: { heading: 80, pitch: -8, roll: 2 }
+              }
+            }
+          )
+        },
+      },
+      {
+        text: "Miyake Island",
+        onselect: async () => {
+          await cesiumThreejs3DGS.remove3dgsAll()
+          cesiumThreejs3DGS.load3dgs(
+            {
+              splatUrl: "./demo/miyake-island.ksplat",
+              lat: 34.07969,
+              lon: 139.48138,
+              height: 63,
+              headingPitchRoll: { heading: 334, pitch: 180, roll: 0 },
+              scale: 2,
+              camera: {
+                offset: { x: -20, y: 14, z: 3 },
+                headingPitchRoll: { heading: 95, pitch: 15, roll: 0 }
+              }
+            }
+          )
+        },
+      },
+      {
+        text: "Triangular point",
+        onselect: async () => {
+          await cesiumThreejs3DGS.remove3dgsAll()
+          cesiumThreejs3DGS.load3dgs(
+            {
+              splatUrl: "./demo/triangular-point.ksplat",
+              lat: 36.02505642,
+              lon: 140.17925239,
+              height: 63.3761,
+              headingPitchRoll: { heading: 190, pitch: 180, roll: 0 },
+              scale: 1,
+              camera: {
+                offset: { x: 0, y: 0, z: 15 },
+                headingPitchRoll: { heading: -180, pitch: -90, roll: 0 }
+              }
+            }
+          )
+        },
+      },
+    ]
+
+    viewer.scene.postRender.addEventListener(() => {
+      cesiumThreejs3DGS.renderThreeObj()
+    })
+
+    Sandcastle.addToolbarMenu(options)
+    // TODO: Timing
+    Sandcastle.finishedLoading();
+  </script>
+</body>
+
+</html>
